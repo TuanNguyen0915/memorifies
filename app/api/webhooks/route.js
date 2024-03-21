@@ -1,6 +1,11 @@
 import { Webhook } from "svix"
 import { headers } from "next/headers"
-import { createUser } from "@/lib/database/actions/user.action"
+import {
+  createOrUpdateUser,
+  createUser,
+  deletedUserByClerkId,
+  updateUser,
+} from "@/lib/database/actions/user.action"
 
 export async function POST(req) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -48,20 +53,26 @@ export async function POST(req) {
     })
   }
 
+  
   const eventType = evt.type
-  if (eventType === "user.created") {
-    const { id, first_name, last_name, email_addresses, username, image_url } =
+  if (eventType === "user.created" || eventType === "user.updated") {
+    const { id, email_addresses, first_name, last_name, username, image_url } =
       evt?.data
-    const newUser = await createUser(
-      id,
-      email_addresses,
-      first_name,
-      last_name,
-      username,
-      image_url,
-    )
-    return new Response(newUser, { status: 201 })
+    try {
+      await createOrUpdateUser(id,first_name,last_name,username,image_url,email_addresses)
+      return new Response("Updated account", { status: 200 })
+    } catch (error) {
+      return new Response(error.message, { status: 500 })
+    }
   }
 
-  return new Response("", { status: 200 })
+  if (eventType === "user.deleted") {
+    const { id } = evt?.data
+    try {
+      await deletedUserByClerkId(id)
+      return new Response("Deleted account", { status: 200 })
+    } catch (error) {
+      return new Response(error.message, { status: 500 })
+    }
+  }
 }

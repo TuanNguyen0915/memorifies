@@ -15,7 +15,7 @@ const BottomBar = () => {
             href={link.path}
             key={idx}
             className={` ${
-              isActive && 'bg-secondary-100'
+              isActive && 'bg-primary'
             } flex items-center gap-4 rounded-xl p-4 text-2xl duration-300 hover:bg-primary`}>
             <p className='scale-125 flexCenter'>{link.icon}</p>
           </Link>

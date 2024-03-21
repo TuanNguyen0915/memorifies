@@ -12,6 +12,7 @@
     "@clerk/nextjs": "^4.29.9",
     "@clerk/themes": "^1.7.10",
     "@radix-ui/react-slot": "^1.0.2",
+    "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-react": "^0.359.0",
@@ -24,7 +25,8 @@
     "react-spinners": "^0.13.8",
     "svix": "^1.21.0",
     "tailwind-merge": "^2.2.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
