@@ -1,11 +1,29 @@
-import { PostCard } from '@/components/shared/mainContainer/PostCard'
+"use client"
+import { PostCard } from "@/components/shared/mainContainer/PostCard"
+import { getAllPosts } from "@/lib/services/post.service"
+import { useEffect, useState, useTransition } from "react"
 
-export default function Home() {
+const HomePage = () => {
+  const [allPosts, setAllPosts] = useState([])
+  useEffect(() => {
+    try {
+      const fetchPosts = async () => {
+        const data = await getAllPosts()
+        setAllPosts(data)
+      }
+      fetchPosts()
+    } catch (error) {
+      console.log(error.message)
+    }
+  }, [])
+
   return (
     <main className="flexCol gap-10">
-      <PostCard imgSrc="https://images.unsplash.com/photo-1707343848723-bd87dea7b118?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-      <PostCard imgSrc="https://images.unsplash.com/photo-1710598586964-77602da09d41?q=80&w=1928&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-      <PostCard imgSrc="https://images.unsplash.com/photo-1710594935133-17e492868934?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+      {allPosts?.map((post) => (
+        <PostCard key={post._id} post={post} />
+      ))}
     </main>
   )
 }
+
+export default HomePage

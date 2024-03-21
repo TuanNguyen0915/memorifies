@@ -33,7 +33,9 @@ const TopBar = () => {
         {currentUser && (
           <>
             <div className="max-lg:hidden">
-              <Button variant="custom">New Post</Button>
+              <Link href="/new-post">
+                <Button variant="custom">New Post</Button>
+              </Link>
             </div>
             <div className="lg:hidden">
               <Link href={`/profile/${currentUser._id}`}>
