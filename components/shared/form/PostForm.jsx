@@ -6,12 +6,15 @@ import { EyeIcon, Pencil } from "lucide-react"
 import React, { useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import PreviewPostForm from "./PreviewPostForm"
-
+import { MdOutlineAddPhotoAlternate } from "react-icons/md"
+import Image from "next/image"
+import { createPost } from "@/lib/services/post.service"
+import { useRouter } from "next/navigation"
 const PostForm = () => {
+  const router = useRouter()
   const { currentUser } = useUserStore()
   const [isTransition, setIsTransition] = useTransition()
   const [isPreview, setIsPreview] = useState(false)
-  const [previewUrl, setPreviewUrl] = useState("")
   const {
     register,
     handleSubmit,
@@ -22,33 +25,54 @@ const PostForm = () => {
       caption: "",
       postPhoto: "",
       tag: "",
-      author: "",
+      creator: "",
     },
   })
 
-  const handleChangePhoto = (e) => {
-    const url = URL.createObjectURL(e.target.files[0])
-    setPreviewUrl(url)
-  }
-
-  const publishPost = async (data) => {
-    setIsTransition(() => {
-      data.author = currentUser?._id
-      console.log(data)
+  const publishPost = (data) => {
+    setIsTransition(async () => {
+      data.creator = currentUser?._id
+      const newPost = await createPost(data)
+      console.log(newPost)
+      if (newPost.status === 201) {
+        router.push("/")
+      }
     })
   }
+
   return (
     <form onSubmit={handleSubmit(publishPost)} className="space-y-4">
       <div
         className={`${
-          isPreview ? "hidden" : "flexCenter"
+          isPreview ? "hidden" : "flexCenter flexCol"
         }  h-[400px] w-full rounded-xl border border-input`}
       >
+        <label htmlFor="postPhoto" className="flex items-center gap-10">
+          <MdOutlineAddPhotoAlternate size={60} />
+
+          <p>
+            {watch("postPhoto")?.length > 0
+              ? "Select another file"
+              : "Select a file"}
+          </p>
+        </label>
         <Input
+          {...register("postPhoto")}
           type="file"
-          onChange={handleChangePhoto}
-          className="border-none"
+          className="w-full border-none"
+          id="postPhoto"
+          style={{ display: "none" }}
+          accept="image/*"
         />
+        {watch("postPhoto")?.length > 0 && (
+          <Image
+            src={URL.createObjectURL(watch("postPhoto")[0])}
+            alt="post"
+            width={200}
+            height={150}
+            className="rounded-xl object-contain"
+          />
+        )}
       </div>
       <Input
         {...register("caption", {
@@ -86,7 +110,7 @@ const PostForm = () => {
       {isPreview && currentUser && (
         <PreviewPostForm
           currentUser={currentUser}
-          previewUrl={previewUrl}
+          previewUrl={URL.createObjectURL(watch("postPhoto")[0])}
           watch={watch}
         />
       )}
@@ -108,7 +132,12 @@ const PostForm = () => {
             </>
           )}
         </div>
-        <Button type="submit" variant="custom" className="min-w-[150px]">
+        <Button
+          disabled={isTransition}
+          type="submit"
+          variant="custom"
+          className="min-w-[150px] cursor-not-allowed disabled:opacity-50"
+        >
           {isTransition ? "Posting..." : "Post"}
         </Button>
       </div>

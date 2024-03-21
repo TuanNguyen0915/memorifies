@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card"
 import Image from "next/image"
 import { Bookmark, Heart } from "lucide-react"
-const PreviewPostForm = ({currentUser, previewUrl, watch}) => {
+const PreviewPostForm = ({ currentUser, previewUrl, watch }) => {
   return (
     <Card className="group w-full">
       <CardHeader className="flex flex-col gap-4">
@@ -19,13 +19,13 @@ const PreviewPostForm = ({currentUser, previewUrl, watch}) => {
               alt="avatar"
               width={80}
               height={80}
-              className="rounded-full"
+              className="rounded-full max-lg:h-[60px] max-lg:w-[60px]"
             />
             <div className="flexCol gap-2">
-              <p>
+              <p className="max-lg:text-lg">
                 {currentUser.firstName} {currentUser.lastName}
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-lg text-muted-foreground lg:text-base">
                 @{currentUser.username}
               </p>
             </div>
@@ -34,13 +34,15 @@ const PreviewPostForm = ({currentUser, previewUrl, watch}) => {
       </CardHeader>
       <CardContent className="w-full">
         {watch("caption") ? (
-          <p className="text-2xl font-bold tracking-wide">{watch("caption")}</p>
+          <p className="text-lg font-bold tracking-wide lg:text-2xl">
+            {watch("caption")}
+          </p>
         ) : (
-          <p className="text-2xl font-bold tracking-wide text-red-300">
+          <p className="text-lg font-bold tracking-wide text-red-400 lg:text-2xl">
             Missing caption
           </p>
         )}
-        <div className="flexCenter relative h-[600px] w-full overflow-hidden rounded-xl">
+        <div className="flexCenter relative h-[400px] w-full  overflow-hidden rounded-xl lg:h-[600px]">
           {previewUrl ? (
             <Image
               src={previewUrl}
@@ -49,7 +51,7 @@ const PreviewPostForm = ({currentUser, previewUrl, watch}) => {
               className="rounded-xl object-contain transition-all duration-500 group-hover:scale-110"
             />
           ) : (
-            <p className="text-2xl font-bold tracking-wide text-red-300">
+            <p className="text-lg font-bold tracking-wide text-red-400 lg:text-2xl">
               Missing photo
             </p>
           )}
@@ -57,7 +59,7 @@ const PreviewPostForm = ({currentUser, previewUrl, watch}) => {
         {watch("tag") ? (
           <p className="text-2xl font-bold tracking-wide">{watch("tag")}</p>
         ) : (
-          <p className="text-lg font-bold tracking-wide text-red-300">
+          <p className="text-lg font-bold tracking-wide text-red-400">
             Missing tag
           </p>
         )}

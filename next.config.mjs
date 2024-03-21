@@ -9,6 +9,9 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'img.clerk.com',
+      },{
+        protocol: 'http',
+        hostname: "res.cloudinary.com"
       }
     ]
   }
