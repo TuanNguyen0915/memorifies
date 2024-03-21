@@ -22,13 +22,15 @@ const LeftBar = () => {
           {currentUser && (
             <>
               <div className="flexCenter w-full flex-col gap-6">
-                <Link href={`/profile/${currentUser._id}`}>
+                <Link
+                  href={`/profile/${currentUser._id}`}
+                  className="relative h-[100px] w-[100px] rounded-full ring-[1px] ring-ring"
+                >
                   <Image
                     src={currentUser.profilePhoto}
                     alt="avatar"
-                    width={100}
-                    height={100}
-                    className="rounded-full object-center"
+                    fill
+                    className="rounded-full object-cover object-center"
                   />
                 </Link>
                 <div className="flexCenter w-full flex-col">
@@ -81,7 +83,7 @@ const LeftBar = () => {
                           width: "3.5rem",
                           height: "3.5rem",
                           border: "1px solid blue",
-                        }
+                        },
                       },
                     }}
                   />

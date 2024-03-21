@@ -38,7 +38,7 @@ export function PostCard({ imgSrc }) {
             src={imgSrc}
             alt="post"
             fill
-            className="rounded-xl object-cover object-center transition-all duration-500 group-hover:scale-110"
+            className="rounded-xl object-contain transition-all duration-500 group-hover:scale-110"
           />
         </div>
       </CardContent>
