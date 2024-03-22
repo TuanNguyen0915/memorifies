@@ -136,7 +136,7 @@ const PostForm = () => {
           disabled={isTransition}
           type="submit"
           variant="custom"
-          className="min-w-[150px] cursor-not-allowed disabled:opacity-50"
+          className="min-w-[150px] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isTransition ? "Posting..." : "Post"}
         </Button>

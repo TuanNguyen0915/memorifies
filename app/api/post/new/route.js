@@ -3,8 +3,6 @@ import User from "@/lib/database/models/user.model"
 import { connectToDb } from "@/lib/database/mongodb"
 import { NextResponse } from "next/server"
 
-const HOMEPAGE = '/'
-import { revalidatePath } from "next/cache"
 
 export const POST = async (req) => {
   try {
@@ -26,7 +24,6 @@ export const POST = async (req) => {
       },
       { new: true },
     )
-    revalidatePath(HOMEPAGE)
     return NextResponse.json({ post }, { status: 201 })
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
