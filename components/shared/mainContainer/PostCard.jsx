@@ -10,9 +10,25 @@ import {
 } from "@/components/ui/card"
 import Image from "next/image"
 import { Bookmark, Heart } from "lucide-react"
-
-export function PostCard({ post }) {
+import { useUserStore } from "@/lib/stores/user.store"
+import { likePost, savePost } from "@/lib/services/post.service"
+import CurrentUser from "../CurrentUser"
+import { getUserByClerkId } from "@/lib/services/user.service"
+export function PostCard({ post, update }) {
+  const { currentUser, setCurrentUser } = useUserStore()
   const postCreator = post.creator
+  const isLike = post.likes.includes(currentUser?._id)
+  const isSave = currentUser?.savePosts.includes(post._id)
+
+  const handleLike = async () => {
+    await likePost(currentUser._id, post._id)
+    if (update) update()
+  }
+  const handleSave = async () => {
+    await savePost(currentUser?._id, post._id)
+    const updatedUser = await getUserByClerkId(currentUser?.clerkId)
+    setCurrentUser(updatedUser)
+  }
   return (
     <Card className="group w-full">
       <CardHeader className="flex flex-col gap-4">
@@ -48,8 +64,19 @@ export function PostCard({ post }) {
         </div>
       </CardContent>
       <CardFooter className="flexBetween">
-        <Heart size={30} />
-        <Bookmark size={30} />
+        <div className="flex items-center gap-2">
+          <Heart
+            size={30}
+            className={`${isLike && "text-red-400"} cursor-pointer hover:text-red-400`}
+            onClick={handleLike}
+          />
+          <p>{post.likes.length < 1 ? "" : `(${post.likes.length})`}</p>
+        </div>
+        <Bookmark
+          className={`${isSave && "text-orange-400"} cursor-pointer hover:text-orange-400`}
+          size={30}
+          onClick={handleSave}
+        />
       </CardFooter>
     </Card>
   )
