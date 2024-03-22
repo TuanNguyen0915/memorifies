@@ -11,18 +11,23 @@ import {
 import Image from "next/image"
 import { Bookmark, Heart } from "lucide-react"
 import { useUserStore } from "@/lib/stores/user.store"
-import { likePost, savePost } from "@/lib/services/post.service"
-import CurrentUser from "../CurrentUser"
+import { getAllPosts, likePost, savePost } from "@/lib/services/post.service"
 import { getUserByClerkId } from "@/lib/services/user.service"
-export function PostCard({ post, update }) {
+import { useAllPostsStore } from "@/lib/stores/allPosts.store"
+export function PostCard({ post }) {
+  const { setAllPosts } = useAllPostsStore()
   const { currentUser, setCurrentUser } = useUserStore()
   const postCreator = post.creator
   const isLike = post.likes.includes(currentUser?._id)
-  const isSave = currentUser?.savePosts.includes(post._id)
-
+  const isSave = currentUser?.savePosts.filter(
+    (item) => item._id.toString() === post._id.toString(),
+  )
   const handleLike = async () => {
     await likePost(currentUser._id, post._id)
-    if (update) update()
+    const updatedPosts = await getAllPosts()
+    const updatedUser = await getUserByClerkId(currentUser?.clerkId)
+    setCurrentUser(updatedUser)
+    setAllPosts(updatedPosts)
   }
   const handleSave = async () => {
     await savePost(currentUser?._id, post._id)
@@ -73,7 +78,7 @@ export function PostCard({ post, update }) {
           <p>{post.likes.length < 1 ? "" : `(${post.likes.length})`}</p>
         </div>
         <Bookmark
-          className={`${isSave && "text-orange-400"} cursor-pointer hover:text-orange-400`}
+          className={`${isSave?.length > 0 && "text-orange-400"} cursor-pointer hover:text-orange-400`}
           size={30}
           onClick={handleSave}
         />
