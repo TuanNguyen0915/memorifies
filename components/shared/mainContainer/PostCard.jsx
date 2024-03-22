@@ -11,8 +11,8 @@ import {
 import Image from "next/image"
 import { Bookmark, Heart } from "lucide-react"
 import { useUserStore } from "@/lib/stores/user.store"
-import { getAllPosts, likePost, savePost } from "@/lib/services/post.service"
-import { getUserByClerkId } from "@/lib/services/user.service"
+import { getAllPosts } from "@/lib/services/post.service"
+import { getUserByClerkId, likePost, savePost } from "@/lib/services/user.service"
 import { useAllPostsStore } from "@/lib/stores/allPosts.store"
 export function PostCard({ post }) {
   const { setAllPosts } = useAllPostsStore()

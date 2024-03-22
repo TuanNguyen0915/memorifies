@@ -8,9 +8,9 @@ import { useForm } from "react-hook-form"
 import PreviewPostForm from "./PreviewPostForm"
 import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 import Image from "next/image"
-import { createPost } from "@/lib/services/post.service"
+import { createPost, updatedPost} from "@/lib/services/post.service"
 import { useRouter } from "next/navigation"
-const PostForm = () => {
+const PostForm = ({ post, editing }) => {
   const router = useRouter()
   const { currentUser } = useUserStore()
   const [isTransition, setIsTransition] = useTransition()
@@ -22,20 +22,26 @@ const PostForm = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      caption: "",
-      postPhoto: "",
-      tag: "",
-      creator: "",
+      caption: post?.caption || "",
+      postPhoto: post?.postPhoto || "",
+      tag: post?.tag || "",
+      creator: post?.creator || "",
     },
   })
 
   const publishPost = (data) => {
     setIsTransition(async () => {
-      data.creator = currentUser?._id
-      const newPost = await createPost(data)
-      console.log(newPost)
-      if (newPost.status === 201) {
-        router.push("/")
+      if (editing) {
+        const selectedPost = await updatedPost(data, post?._id)
+        if (selectedPost.status === 201) {
+          return router.push("/")
+        }
+      } else {
+        data.creator = currentUser?._id
+        const newPost = await createPost(data)
+        if (newPost.status === 201) {
+          return router.push("/")
+        }
       }
     })
   }
@@ -64,14 +70,25 @@ const PostForm = () => {
           style={{ display: "none" }}
           accept="image/*"
         />
-        {watch("postPhoto")?.length > 0 && (
+        {typeof watch("postPhoto") === "string" &&
+        watch("postPhoto").length > 0 ? (
           <Image
-            src={URL.createObjectURL(watch("postPhoto")[0])}
+            src={watch("postPhoto")}
             alt="post"
             width={200}
             height={150}
             className="rounded-xl object-contain"
           />
+        ) : (
+          watch("postPhoto") && (
+            <Image
+              src={URL.createObjectURL(watch("postPhoto")[0])}
+              alt="post"
+              width={200}
+              height={150}
+              className="rounded-xl object-contain"
+            />
+          )
         )}
       </div>
       <Input
@@ -110,7 +127,11 @@ const PostForm = () => {
       {isPreview && currentUser && (
         <PreviewPostForm
           currentUser={currentUser}
-          previewUrl={URL.createObjectURL(watch("postPhoto")[0])}
+          previewUrl={
+            typeof watch("postPhoto") === "string"
+              ? watch("postPhoto")
+              : URL.createObjectURL(watch("postPhoto")[0])
+          }
           watch={watch}
         />
       )}

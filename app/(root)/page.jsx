@@ -3,27 +3,29 @@ import PostLoader from "@/components/shared/PostLoader"
 import { PostCard } from "@/components/shared/mainContainer/PostCard"
 import { getAllPosts } from "@/lib/services/post.service"
 import { useAllPostsStore } from "@/lib/stores/allPosts.store"
-import { useEffect, useState } from "react"
+import { useEffect, useTransition } from "react"
 
 const HomePage = () => {
-  const [isLoading, setIsLoading] = useState()
+  const [isTransition, startTransition] = useTransition()
   const { allPosts, setAllPosts } = useAllPostsStore()
   useEffect(() => {
-    setIsLoading(true)
-    try {
-      const fetchPosts = async () => {
-        const data = await getAllPosts()
+    startTransition(async () => {
+      try {
+      const data = await getAllPosts()
         setAllPosts(data)
+      } catch (error) {
+        console.log(error)
       }
-      fetchPosts()
-    } catch (error) {
-      console.log(error.message)
-    } finally {
-      setIsLoading(false)
-    }
+    })
   }, [setAllPosts])
 
-  if (isLoading) return <PostLoader />
+  if (isTransition)
+    return (
+      <>
+        <PostLoader />
+        <PostLoader />
+      </>
+    )
   return (
     <main className="flexCol gap-10">
       {allPosts.length > 0 &&

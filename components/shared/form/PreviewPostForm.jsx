@@ -43,18 +43,12 @@ const PreviewPostForm = ({ currentUser, previewUrl, watch }) => {
           </p>
         )}
         <div className="flexCenter relative h-[400px] w-full  overflow-hidden rounded-xl lg:h-[600px]">
-          {previewUrl ? (
-            <Image
+           <Image
               src={previewUrl}
               alt="post"
               fill
               className="rounded-xl object-contain transition-all duration-500 group-hover:scale-110"
             />
-          ) : (
-            <p className="text-lg font-bold tracking-wide text-red-400 lg:text-2xl">
-              Missing photo
-            </p>
-          )}
         </div>
         {watch("tag") ? (
           <p className="text-2xl font-bold tracking-wide">{watch("tag")}</p>

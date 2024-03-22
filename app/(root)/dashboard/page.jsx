@@ -1,6 +1,6 @@
 "use client"
 import { useUserStore } from "@/lib/stores/user.store"
-import React from "react"
+import { useEffect, useState, useTransition } from "react"
 import {
   Table,
   TableBody,
@@ -13,12 +13,33 @@ import {
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { PencilIcon, TrashIcon } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { getUserByClerkId } from "@/lib/services/user.service"
+import PostLoader from "@/components/shared/PostLoader"
 const DashboardPage = () => {
-  const { currentUser } = useUserStore()
-  const posts = currentUser?.posts
+  const router = useRouter()
+  const [isTransition, setIsTransition] = useTransition()
+  const { currentUser, setCurrentUser } = useUserStore()
+  const [posts, setPosts] = useState(null)
+  useEffect(() => {
+    setIsTransition(async () => {
+      const user = await getUserByClerkId(currentUser?.clerkId)
+      setPosts(user?.posts)
+      setCurrentUser(user)
+    }, [])
+  }, [currentUser?.clerkId, setCurrentUser])
+
+  if (!posts) {
+    return (
+      <div className="w-full">
+        <PostLoader />
+        <PostLoader />
+      </div>
+    )
+  }
 
   return (
-    <Table>
+    <Table className="mt-10">
       {currentUser && (
         <>
           <TableCaption>
@@ -37,7 +58,7 @@ const DashboardPage = () => {
             <TableRow>
               <TableHead>Post</TableHead>
               <TableHead>Photo</TableHead>
-              <TableHead>Action</TableHead>
+              <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -52,7 +73,7 @@ const DashboardPage = () => {
                       src={post.postPhoto}
                       fill
                       alt={post.caption}
-                      className="rounded-xl object-cover object-center transition-all group-hover:scale-110"
+                      className="rounded-xl border object-cover object-center transition-all group-hover:scale-110"
                     />
                   </div>
                 </TableCell>
@@ -61,6 +82,7 @@ const DashboardPage = () => {
                     <Button
                       variant="outline"
                       className="w-full gap-2 border-orange-400"
+                      onClick={() => router.push(`/post/${post._id}/edit`)}
                     >
                       <PencilIcon className="size-5" />
                       <p className="text-sm font-bold lg:text-lg">Edit</p>

@@ -7,13 +7,17 @@ import { SignOutButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 // import { useUserStore } from "@/lib/stores/user.store"
 import { Button } from "@/components/ui/button"
 import { useUserStore } from "@/lib/stores/user.store"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 const LeftBar = () => {
+  const router = useRouter()
   const pathName = usePathname()
   const { currentUser } = useUserStore()
   return (
     <div className="flexCol min-w-2xl sticky bottom-0 left-0 top-0 h-screen gap-10 overflow-auto px-4 py-12 max-lg:hidden">
-      <h1 className=" group text-5xl font-bold tracking-widest text-primary transition-all duration-500 hover:text-foreground">
+      <h1
+        onClick={() => router.push("/")}
+        className=" group text-5xl font-bold tracking-widest text-primary transition-all duration-500 hover:text-foreground cursor-pointer"
+      >
         Memori
         <span className="text-foreground group-hover:text-primary">fy</span>
       </h1>
