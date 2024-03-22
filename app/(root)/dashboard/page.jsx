@@ -1,6 +1,6 @@
 "use client"
 import { useUserStore } from "@/lib/stores/user.store"
-import { useEffect, useState, useTransition } from "react"
+import { useEffect, useState } from "react"
 import {
   Table,
   TableBody,
@@ -15,32 +15,29 @@ import { Button } from "@/components/ui/button"
 import { PencilIcon, TrashIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getUserByClerkId } from "@/lib/services/user.service"
-import PostLoader from "@/components/shared/PostLoader"
+import { deletePost } from "@/lib/services/post.service"
 const DashboardPage = () => {
   const router = useRouter()
-  const [isTransition, setIsTransition] = useTransition()
   const { currentUser, setCurrentUser } = useUserStore()
-  const [posts, setPosts] = useState(null)
+
   useEffect(() => {
-    setIsTransition(async () => {
+    const fetchData = async () => {
       const user = await getUserByClerkId(currentUser?.clerkId)
-      setPosts(user?.posts)
       setCurrentUser(user)
-    }, [])
+    }
+    fetchData()
   }, [currentUser?.clerkId, setCurrentUser])
 
-  if (!posts) {
-    return (
-      <div className="w-full">
-        <PostLoader />
-        <PostLoader />
-      </div>
-    )
+  const handleDelete = async (postId) => {
+    await deletePost(postId)
+    //update the currentUser
+    const user = await getUserByClerkId(currentUser?.clerkId)
+    setCurrentUser(user)
   }
 
   return (
     <Table className="mt-10">
-      {currentUser && (
+      {currentUser.posts && (
         <>
           <TableCaption>
             <p className="group">
@@ -90,6 +87,7 @@ const DashboardPage = () => {
                     <Button
                       variant="outline"
                       className="w-full gap-2 border-red-400"
+                      onClick={() => handleDelete(post._id)}
                     >
                       <TrashIcon className="size-5" />
                       <p className="text-sm font-bold lg:text-lg">Del</p>

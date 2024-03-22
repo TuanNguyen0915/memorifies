@@ -40,3 +40,20 @@ export const PUT = async (req, { params }) => {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
+
+
+export const DELETE = async (req, {params}) => {
+  try {
+    const { postId } = params
+    await connectToDb()
+    const post = await Post.findByIdAndDelete(postId)
+    await User.findByIdAndUpdate(post.creator, {
+      $pull: {
+        posts: post._id
+      }
+    }, { new: true })
+    return NextResponse.json({ post }, { status: 200 })
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+}
