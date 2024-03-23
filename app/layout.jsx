@@ -3,7 +3,6 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 import { dark } from '@clerk/themes'
-import CurrentUser from '@/components/shared/CurrentUser'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -19,7 +18,6 @@ export default function RootLayout({ children }) {
           baseTheme: dark,
         }}>
         <body className={`${inter.className} mx-auto min-h-screen max-w-[1920px]`} suppressHydrationWarning>
-          <CurrentUser />
           {children}
         </body>
       </ClerkProvider>

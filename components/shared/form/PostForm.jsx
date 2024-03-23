@@ -8,11 +8,12 @@ import { useForm } from "react-hook-form"
 import PreviewPostForm from "./PreviewPostForm"
 import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 import Image from "next/image"
-import { createPost, updatedPost} from "@/lib/services/post.service"
+import { createPost, updatedPost } from "@/lib/services/post.service"
 import { useRouter } from "next/navigation"
+import { getUserByClerkId } from "@/lib/services/user.service"
 const PostForm = ({ post, editing }) => {
   const router = useRouter()
-  const { currentUser } = useUserStore()
+  const { currentUser, setCurrentUser } = useUserStore()
   const [isTransition, setIsTransition] = useTransition()
   const [isPreview, setIsPreview] = useState(false)
   const {
@@ -34,12 +35,17 @@ const PostForm = ({ post, editing }) => {
       if (editing) {
         const selectedPost = await updatedPost(data, post?._id)
         if (selectedPost.status === 201) {
+          const updatedUser = await getUserByClerkId(currentUser?.clerkId)
+          setCurrentUser(updatedUser)
           return router.push("/")
         }
       } else {
         data.creator = currentUser?._id
         const newPost = await createPost(data)
+
         if (newPost.status === 201) {
+          const updatedUser = await getUserByClerkId(currentUser?.clerkId)
+          setCurrentUser(updatedUser)
           return router.push("/")
         }
       }
