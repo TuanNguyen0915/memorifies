@@ -1,6 +1,6 @@
 "use client"
 
-import { PostCard } from "@/components/shared/mainContainer/PostCard"
+import { PostCard } from "@/components/shared/postCard/PostCard"
 import { useUserStore } from "@/lib/stores/user.store"
 
 const SavePage = () => {

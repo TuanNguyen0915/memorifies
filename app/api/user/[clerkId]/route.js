@@ -6,16 +6,19 @@ import { NextResponse } from "next/server"
 export const GET = async (req, { params }) => {
   try {
     await connectToDb()
-    const user = await User.findOne({ clerkId: params.clerkId })
-      .populate({
+    const user = await User.findOne({ clerkId: params.clerkId }).populate(
+      {
         path: "posts likePosts savePosts",
         model: Post,
         populate: {
           path: "creator",
           model: User,
         },
-      })
-      .populate("followers followings")
+      },
+    ).populate({
+      path: "followers followings",
+      model: User,
+    })
 
     return NextResponse.json(user, { status: 200 })
   } catch (error) {

@@ -1,6 +1,6 @@
 "use client"
 import PostLoader from "@/components/shared/PostLoader"
-import { PostCard } from "@/components/shared/mainContainer/PostCard"
+import { PostCard } from "@/components/shared/postCard/PostCard"
 import { getAllPosts } from "@/lib/services/post.service"
 import { useAllPostsStore } from "@/lib/stores/allPosts.store"
 import { useEffect, useTransition } from "react"
@@ -11,7 +11,7 @@ const HomePage = () => {
   useEffect(() => {
     startTransition(async () => {
       try {
-      const data = await getAllPosts()
+        const data = await getAllPosts()
         setAllPosts(data)
       } catch (error) {
         console.log(error)
