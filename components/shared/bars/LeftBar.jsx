@@ -1,5 +1,5 @@
 "use client"
-import { navLinks } from "@/lib/constants"
+import { navLinks, unLoginNavLinks } from "@/lib/constants"
 import Link from "next/link"
 import Image from "next/image"
 import { LogOut } from "lucide-react"
@@ -11,12 +11,12 @@ import { usePathname, useRouter } from "next/navigation"
 const LeftBar = () => {
   const router = useRouter()
   const pathName = usePathname()
-  const { currentUser } = useUserStore()
+  const { currentUser, setCurrentUser } = useUserStore()
   return (
     <div className="flexCol min-w-2xl sticky bottom-0 left-0 top-0 h-screen gap-10 overflow-auto px-4 py-12 max-lg:hidden">
       <h1
         onClick={() => router.push("/")}
-        className=" group text-5xl font-bold tracking-widest text-primary transition-all duration-500 hover:text-foreground cursor-pointer"
+        className=" group cursor-pointer text-5xl font-bold tracking-widest text-primary transition-all duration-500 hover:text-foreground"
       >
         Memori
         <span className="text-foreground group-hover:text-primary">fy</span>
@@ -27,7 +27,7 @@ const LeftBar = () => {
             <>
               <div className="flexCenter w-full flex-col gap-6">
                 <Link
-                  href={`/profile/${currentUser._id}`}
+                  href={`/profile/${currentUser.clerkId}`}
                   className="relative h-[100px] w-[100px] rounded-full ring-[1px] ring-ring"
                 >
                   <Image
@@ -45,7 +45,6 @@ const LeftBar = () => {
                     @{currentUser.username}
                   </p>
                 </div>
-
                 <div className="flexCol w-full gap-4">
                   {navLinks.map((link, idx) => {
                     const isActive = pathName === link.path
@@ -92,8 +91,8 @@ const LeftBar = () => {
                     }}
                   />
                 </div>
-                <div className="w-1/2">
-                  <SignOutButton>
+                <div className="w-1/2" onClick={() => setCurrentUser(null)}>
+                  <SignOutButton afterSignOutUrl>
                     <div className="group flex cursor-pointer items-center gap-4 ">
                       <LogOut
                         size={24}
@@ -110,9 +109,29 @@ const LeftBar = () => {
           )}
         </SignedIn>
         <SignedOut>
-          <div className="flexCenter h-full w-full">
+          <div className="flexBetween h-full w-full flex-col gap-10">
+            <div className="mt-[10vh] w-full flex-col">
+            {unLoginNavLinks.map((link, idx) => {
+                    const isActive = pathName === link.path
+                    return (
+                      <div key={idx} className="flexCol group px-4">
+                        <Link
+                          href={link.path}
+                          className={`flex items-center gap-4 rounded-xl py-4 ${isActive && "bg-primary px-8"}`}
+                        >
+                          <p className="text-xl">{link.icon}</p>
+                          <p className="text-xl">{link.name}</p>
+                        </Link>
+                        <div
+                          className={`${!isActive && "h-[2px] w-0 bg-primary transition-all duration-300 group-hover:w-full"}`}
+                        />
+                      </div>
+                    )
+                  })}
+            </div>
+
             <Link href="/sign-in" className="w-full">
-              <Button className="w-full" variant="custom">
+              <Button className="w-full py-8 text-xl" variant="custom">
                 Sign In
               </Button>
             </Link>
