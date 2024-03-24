@@ -47,11 +47,9 @@ export const DELETE = async (req, {params}) => {
     const { postId } = params
     await connectToDb()
     const post = await Post.findByIdAndDelete(postId)
-    await User.findByIdAndUpdate(post.creator, {
-      $pull: {
-        posts: post._id
-      }
-    }, { new: true })
+    const user  = await User.findById(post.creator)
+    user.posts = user.posts.filter(item => item.toString() !== postId.toString())
+    await user.save()
     return NextResponse.json({ post }, { status: 200 })
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

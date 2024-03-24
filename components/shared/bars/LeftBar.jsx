@@ -109,8 +109,8 @@ const LeftBar = () => {
           )}
         </SignedIn>
         <SignedOut>
-          <div className="flexBetween h-full w-full flex-col gap-10">
-            <div className="mt-[10vh] w-full flex-col">
+          <div className="flexBetween h-full w-full flex-col">
+            <div className="mt-[10vh] w-full flex-col space-y-10">
             {unLoginNavLinks.map((link, idx) => {
                     const isActive = pathName === link.path
                     return (
