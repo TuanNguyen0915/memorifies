@@ -82,6 +82,7 @@ const ProfilePage = ({ params }) => {
               followers={
                 myProfile ? currentUser?.followers : userProfile?.followers
               }
+              posts={myProfile ? currentUser?.posts : userProfile?.posts}
             />
           </div>
         </div>

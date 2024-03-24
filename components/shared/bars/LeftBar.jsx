@@ -69,7 +69,6 @@ const LeftBar = () => {
               <div className="flexCol w-full gap-8 border-t-2 border-primary pt-4">
                 <div className="group flex items-center gap-4">
                   <UserButton
-                    afterSignOutUrl="/"
                     showName={true}
                     appearance={{
                       userButtonBox: {
@@ -92,7 +91,7 @@ const LeftBar = () => {
                   />
                 </div>
                 <div className="w-1/2" onClick={() => setCurrentUser(null)}>
-                  <SignOutButton afterSignOutUrl>
+                  <SignOutButton>
                     <div className="group flex cursor-pointer items-center gap-4 ">
                       <LogOut
                         size={24}
@@ -111,23 +110,23 @@ const LeftBar = () => {
         <SignedOut>
           <div className="flexBetween h-full w-full flex-col">
             <div className="mt-[10vh] w-full flex-col space-y-10">
-            {unLoginNavLinks.map((link, idx) => {
-                    const isActive = pathName === link.path
-                    return (
-                      <div key={idx} className="flexCol group px-4">
-                        <Link
-                          href={link.path}
-                          className={`flex items-center gap-4 rounded-xl py-4 ${isActive && "bg-primary px-8"}`}
-                        >
-                          <p className="text-xl">{link.icon}</p>
-                          <p className="text-xl">{link.name}</p>
-                        </Link>
-                        <div
-                          className={`${!isActive && "h-[2px] w-0 bg-primary transition-all duration-300 group-hover:w-full"}`}
-                        />
-                      </div>
-                    )
-                  })}
+              {unLoginNavLinks.map((link, idx) => {
+                const isActive = pathName === link.path
+                return (
+                  <div key={idx} className="flexCol group px-4">
+                    <Link
+                      href={link.path}
+                      className={`flex items-center gap-4 rounded-xl py-4 ${isActive && "bg-primary px-8"}`}
+                    >
+                      <p className="text-xl">{link.icon}</p>
+                      <p className="text-xl">{link.name}</p>
+                    </Link>
+                    <div
+                      className={`${!isActive && "h-[2px] w-0 bg-primary transition-all duration-300 group-hover:w-full"}`}
+                    />
+                  </div>
+                )
+              })}
             </div>
 
             <Link href="/sign-in" className="w-full">

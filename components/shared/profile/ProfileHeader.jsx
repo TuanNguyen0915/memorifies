@@ -19,7 +19,7 @@ const ProfileHeader = ({myProfile}) => {
               <div
               onClick={()=> setCurrentUser(null)}
               className="flexCenter absolute right-4 top-4 z-20 rounded-xl bg-red-400 px-4 py-2 opacity-50 transition-all duration-1000 group-hover:opacity-100">
-                <SignOutButton afterSignOutUrl="/">
+                <SignOutButton>
                   <div className="flexCenter gap-1 cursor-pointer">
                     <LogOutIcon className="size-4 max-lg:hidden" />
                     <p className="text-xs">Sign Out</p>

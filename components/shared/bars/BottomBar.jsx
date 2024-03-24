@@ -10,7 +10,7 @@ const BottomBar = () => {
   const pathName = usePathname()
 
   return (
-    <div className="sticky bottom-0 left-0 right-0 z-20 flex min-h-[100px] w-full items-center justify-around bg-black lg:hidden">
+    <div className="sticky bottom-0 left-0 right-0 z-50 flex min-h-[100px] w-full items-center justify-around bg-black/80 backdrop-blur-xl lg:hidden">
       <SignedIn>
         {navLinks.map((link, idx) => {
           const isActive = pathName === link.path

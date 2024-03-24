@@ -5,9 +5,9 @@ import BottomBar from "../bars/BottomBar"
 
 const MainContainer = ({ children }) => {
   return (
-    <section className="flexCol flex-1 gap-10 p-4 ">
+    <section className="flexCol flex-1 gap-10 ">
       <TopBar />
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 p-2">{children}</div>
       <BottomBar />
     </section>
   )

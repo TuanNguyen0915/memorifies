@@ -26,7 +26,7 @@ const FollowCard = ({ user }) => {
   return (
     <div
       className="flexBetween w-full"
-      onLoadingComplete={(div) => div.classList.remove("opacity-0")}
+      
     >
       <div className="flex items-center gap-4 cursor-pointer"
       onClick={()=> router.push(`/profile/${user.clerkId}`)}>

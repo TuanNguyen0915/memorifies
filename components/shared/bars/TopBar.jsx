@@ -13,7 +13,7 @@ const TopBar = () => {
   const { currentUser } = useUserStore()
   const [searchTerm, setSearchTerm] = useState("")
   return (
-    <div className="flexBetween w-full gap-2">
+    <div className="flexBetween w-full gap-2 p-4">
       <div className="group relative flex-1">
         <Input
           value={searchTerm}
