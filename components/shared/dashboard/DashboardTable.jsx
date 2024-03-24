@@ -8,6 +8,18 @@ import { useTransition } from "react"
 import { useUserStore } from "@/lib/stores/user.store"
 import { useRouter } from "next/navigation"
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 const DashboardTable = ({ post }) => {
   const router = useRouter()
   const [transitioning, startTransition] = useTransition()
@@ -39,20 +51,40 @@ const DashboardTable = ({ post }) => {
         <div className="flexCol gap-4">
           <Button
             variant="outline"
-            className="w-full gap-2 border-orange-400"
+            className="w-full gap-2 rounded-xl border-orange-400"
             onClick={() => router.push(`/post/${post._id}/edit`)}
           >
             <PencilIcon className="size-5" />
             <p className="text-sm font-bold lg:text-lg">Edit</p>
           </Button>
-          <Button
-            variant="outline"
-            className="w-full gap-2 border-red-400"
-            onClick={() => handleDelete(post._id)}
-          >
-            <TrashIcon className="size-5" />
-            <p className="text-sm font-bold lg:text-lg">Del</p>
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full gap-2 rounded-xl border-red-400"
+              >
+                <TrashIcon className="size-5" />
+                <p className="text-sm font-bold lg:text-lg">Del</p>
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-xl font-semibold">Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your post.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="text-lg rounded-xl">Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => handleDelete(post._id)}
+                className="bg-red-400 hover:bg-red-500 text-lg rounded-xl"
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </TableCell>
     </TableRow>
