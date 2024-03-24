@@ -19,8 +19,10 @@ import {
   savePost,
 } from "@/lib/services/user.service"
 import { useAllPostsStore } from "@/lib/stores/allPosts.store"
+import { useRouter } from "next/navigation"
 
 export function PostCard({ post }) {
+  const router = useRouter()
   const { setAllPosts } = useAllPostsStore()
   const { currentUser, setCurrentUser } = useUserStore()
   const isLike = post.likes.includes(currentUser?._id.toString())
@@ -40,19 +42,31 @@ export function PostCard({ post }) {
   }
 
   const handleLike = async () => {
-    await likePost(currentUser._id, post._id)
-    const updatedPosts = await getAllPosts()
-    updatedCurrentUser()
-    setAllPosts(updatedPosts)
+    if (currentUser) {
+      await likePost(currentUser?._id, post._id)
+      const updatedPosts = await getAllPosts()
+      updatedCurrentUser()
+      setAllPosts(updatedPosts)
+    } else {
+      return
+    }
   }
   const handleSave = async () => {
-    await savePost(currentUser?._id, post._id)
-    updatedCurrentUser()
+    if (currentUser) {
+      await savePost(currentUser?._id, post._id)
+      updatedCurrentUser()
+    } else {
+      return
+    }
   }
 
   const handleFollow = async () => {
-    await followingUser(currentUser?.clerkId, post?.creator._id)
-    updatedCurrentUser()
+    if (currentUser) {
+      await followingUser(currentUser?.clerkId, post?.creator._id)
+      updatedCurrentUser()
+    } else {
+      return
+    }
   }
   return (
     <Card className="group w-full">
@@ -60,19 +74,25 @@ export function PostCard({ post }) {
         <CardTitle>
           <div className="flex w-full justify-between">
             {/* AUTHOR INFO */}
-            <div className="flex items-center gap-4">
+            <div
+              className="group/creator flex cursor-pointer items-center gap-4"
+              onClick={() => router.push(`/profile/${post.creator.clerkId}`)}
+            >
               <Image
                 src={post.creator.profilePhoto}
                 alt="avatar"
                 width={80}
                 height={80}
-                className="h-[60px] w-[60px] rounded-full lg:h-[80px] lg:w-[80px]"
+                className="h-[60px] w-[60px] rounded-full opacity-0 transition-all group-hover/creator:ring-[1px] group-hover/creator:ring-primary lg:h-[80px] lg:w-[80px]"
+                onLoadingComplete={(image) =>
+                  image.classList.remove("opacity-0")
+                }
               />
               <div className="flexCol gap-2">
-                <p className="max-lg:text-xl">
+                <p className="transition-all group-hover/creator:text-primary max-lg:text-xl">
                   {post.creator.firstName} {post.creator.lastName}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground transition-all group-hover/creator:text-foreground">
                   @{post.creator.username}
                 </p>
               </div>
@@ -100,7 +120,8 @@ export function PostCard({ post }) {
             src={post.postPhoto}
             alt="post"
             fill
-            className="rounded-xl object-contain transition-all duration-500 group-hover:scale-110"
+            className="rounded-xl object-contain opacity-0 transition-all duration-1000 group-hover:scale-110"
+            onLoadingComplete={(image) => image.classList.remove("opacity-0")}
           />
         </div>
       </CardContent>
