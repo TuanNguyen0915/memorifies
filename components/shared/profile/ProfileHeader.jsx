@@ -6,7 +6,7 @@ import React from 'react'
 
 const ProfileHeader = ({myProfile}) => {
   return (
-    <div className="group relative h-[250px] w-full overflow-hidden rounded-xl lg:h-[500px] border">
+    <div className="group relative h-[250px] w-full overflow-hidden rounded-xl lg:h-[400px] border">
             <Image
               src="https://source.unsplash.com/random/900x500/?night"
               alt="image"

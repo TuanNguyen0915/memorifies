@@ -8,13 +8,24 @@ import { BsSearch } from "react-icons/bs"
 import Link from "next/link"
 import { useUserStore } from "@/lib/stores/user.store"
 import { SignedIn } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
 
 const TopBar = () => {
   const { currentUser } = useUserStore()
   const [searchTerm, setSearchTerm] = useState("")
+  const router = useRouter()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    router.push(`/search/?key=${searchTerm}`)
+  }
+
   return (
     <div className="flexBetween w-full gap-2 p-4">
-      <div className="group relative flex-1">
+      <form
+        className="group relative flex-1"
+        onSubmit={handleSubmit}
+      >
         <Input
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -27,8 +38,9 @@ const TopBar = () => {
           className={`absolute right-4 top-3 opacity-65 transition-all group-hover:opacity-100 ${
             searchTerm && "opacity-100"
           }`}
+          onClick={() => router.push(`/search/?key=${searchTerm}`)}
         />
-      </div>
+      </form>
       <SignedIn>
         {currentUser && (
           <>
@@ -38,7 +50,7 @@ const TopBar = () => {
               </Link>
             </div>
             <div className="lg:hidden">
-              <Link href={`/profile/${currentUser._id}`}>
+              <Link href={`/profile/${currentUser.clerkId}`}>
                 <Image
                   src={currentUser.profilePhoto}
                   alt={currentUser.username}

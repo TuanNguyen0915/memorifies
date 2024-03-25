@@ -129,7 +129,7 @@ export function PostCard({ post }) {
         </div>
         {/* TAG*/}
         <div
-        onClick={() => router.push(`/?category=${post.tag}`)}
+          onClick={() => router.push(`/?category=${post.tag}`)}
           className="my-4 w-fit cursor-pointer rounded-xl border px-4 py-2 transition-all duration-500 hover:opacity-60"
           style={{
             backgroundColor: tagColor,

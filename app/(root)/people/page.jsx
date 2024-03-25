@@ -1,23 +1,33 @@
 "use client"
+import PostLoader from "@/components/shared/PostLoader"
 import { getAllUsers } from "@/lib/services/user.service"
+import { useAllUsersStore } from "@/lib/stores/user.store"
+
 import Image from "next/image"
 import Link from "next/link"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useTransition } from "react"
 
 const PeoplePage = () => {
-  const [allUser, setAllUsers] = useState(null)
+  const { allUsers, setAllUsers } = useAllUsersStore()
+  const [transition, setTransition] = useTransition()
 
   useEffect(() => {
-    const fetchData = async () => {
+    setTransition(async () => {
       const data = await getAllUsers()
       setAllUsers(data)
-    }
-    fetchData()
-  }, [])
+    })
+  }, [setAllUsers])
 
+  if (transition) {
+    return (
+      <div className="w-full">
+        <PostLoader />
+      </div>
+    )
+  }
   return (
     <div className="flexCol w-full gap-10">
-      {allUser?.map((user) => (
+      {allUsers?.map((user) => (
         <Link
           href={`/profile/${user.clerkId}`}
           key={user._id}
