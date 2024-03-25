@@ -4,13 +4,22 @@ import { Input } from "@/components/ui/input"
 import { useUserStore } from "@/lib/stores/user.store"
 import { EyeIcon, Pencil } from "lucide-react"
 import React, { useState, useTransition } from "react"
-import { useForm } from "react-hook-form"
 import PreviewPostForm from "./PreviewPostForm"
 import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 import Image from "next/image"
 import { createPost, updatedPost } from "@/lib/services/post.service"
 import { useRouter } from "next/navigation"
 import { getUserByClerkId } from "@/lib/services/user.service"
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { tags } from "@/lib/constants"
+import { useForm } from "react-hook-form"
 const PostForm = ({ post, editing }) => {
   const router = useRouter()
   const { currentUser, setCurrentUser } = useUserStore()
@@ -51,7 +60,6 @@ const PostForm = ({ post, editing }) => {
       }
     })
   }
-
   return (
     <form onSubmit={handleSubmit(publishPost)} className="space-y-4">
       <div
@@ -113,19 +121,19 @@ const PostForm = ({ post, editing }) => {
       {errors.caption && (
         <p className="text-sm text-red-500">{errors.caption.message}</p>
       )}
-      <Input
-        {...register("tag", {
-          required: "Please field all the fields",
-          validate: (value) => {
-            if (value.length < 3) {
-              return "Tag must be at least 3 characters"
-            }
-            return true
-          },
-        })}
-        placeholder="Tag"
-        className={`${isPreview ? "hidden" : "block"}`}
-      />
+      
+      <select
+        {...register("tag")}
+        className="w-[200px] rounded-xl border bg-transparent px-4 py-2 focus:ring-1 focus:ring-primary hover:outline-none focus:outline-none"
+      defaultValue=""
+      >
+        <option value="" disabled>Select a tag</option>
+        {tags.map((tag, index) => (
+          <option key={index} value={tag.name}>
+            {tag.name}
+          </option>
+        ))}
+      </select>
       {errors.tag && (
         <p className="text-sm text-red-500">{errors.tag.message}</p>
       )}

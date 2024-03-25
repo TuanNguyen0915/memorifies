@@ -20,8 +20,10 @@ import {
 } from "@/lib/services/user.service"
 import { useAllPostsStore } from "@/lib/stores/allPosts.store"
 import { useRouter } from "next/navigation"
+import { tags } from "@/lib/constants"
 
 export function PostCard({ post }) {
+  const tagColor = tags.find((tag) => tag.name === post.tag)?.color
   const router = useRouter()
   const { setAllPosts } = useAllPostsStore()
   const { currentUser, setCurrentUser } = useUserStore()
@@ -116,6 +118,7 @@ export function PostCard({ post }) {
       <CardContent className="w-full">
         <p className="text-2xl font-bold tracking-wide">{post.caption}</p>
         <div className="relative h-[400px] w-full overflow-hidden rounded-xl lg:h-[600px]">
+          {/* IMAGE */}
           <Image
             src={post.postPhoto}
             alt="post"
@@ -123,6 +126,17 @@ export function PostCard({ post }) {
             className="rounded-xl object-contain opacity-0 transition-all duration-1000 group-hover:scale-110"
             onLoadingComplete={(image) => image.classList.remove("opacity-0")}
           />
+        </div>
+        {/* TAG*/}
+        <div
+        onClick={() => router.push(`/?category=${post.tag}`)}
+          className="my-4 w-fit cursor-pointer rounded-xl border px-4 py-2 transition-all duration-500 hover:opacity-60"
+          style={{
+            backgroundColor: tagColor,
+            borderColor: tagColor,
+          }}
+        >
+          <p className="bg-transparent text-sm text-foreground">{post.tag}</p>
         </div>
       </CardContent>
       <CardFooter className="flexBetween">

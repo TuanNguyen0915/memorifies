@@ -37,7 +37,7 @@ const FollowTabs = ({ followings, followers, posts }) => {
       <TabsContent value="posts">
         <Card className="w-full space-y-8 p-4  hover:border focus:border">
           {posts.map((post) => (
-            <div key={posts._id} className="flexBetween w-full">
+            <div key={post._id} className="flexBetween w-full">
               <div className="space-y-4">
                 <p className="text-lg font-bold">{post.caption}</p>
                 <Button variant="outline" className="w-fit max-lg:text-sm border-indigo-300">{post.tag}</Button>
