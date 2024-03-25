@@ -2,7 +2,7 @@
 import React, { useCallback } from "react"
 import qs from "query-string"
 import { useRouter, useSearchParams } from "next/navigation"
-const TagItem = ({ tag, getCategory }) => {
+const TagItem = ({ tag }) => {
   const router = useRouter()
   const params = useSearchParams()
 
@@ -28,9 +28,9 @@ const TagItem = ({ tag, getCategory }) => {
         skipNull: true,
       },
     )
-    getCategory(tag.name)
+   
     router.push(url)
-  }, [params, tag, router, getCategory])
+  }, [params, tag, router])
 
   const isActive = params?.get("category") === tag.name
   return (

@@ -4,33 +4,35 @@ import PostLoader from "@/components/shared/PostLoader"
 import TagItem from "@/components/shared/mainContainer/TagItem"
 import { PostCard } from "@/components/shared/postCard/PostCard"
 import { tags } from "@/lib/constants"
+import { getAllPosts } from "@/lib/services/post.service"
 import { useAllPostsStore } from "@/lib/stores/allPosts.store"
-import { CloudFog } from "lucide-react"
 import { useSearchParams } from "next/navigation"
-import { useCallback, useEffect, useState, useTransition } from "react"
+
+import { useEffect, useTransition } from "react"
 
 const HomePage = () => {
   const params = useSearchParams()
   const [isTransition, startTransition] = useTransition()
-  const { allPosts } = useAllPostsStore()
-  const [filterPosts, setFilterPosts] = useState(allPosts || [])
-  const getCategory = useCallback(
-    (category) => {
-      startTransition(async () => {
-        try {
-          if (!category || category === "All") {
-            setFilterPosts(allPosts)
-          } else {
-            const filterData = allPosts.filter((post) => post.tag === category)
-            setFilterPosts(filterData)
-          }
-        } catch (error) {
-          console.log(error)
+  const { allPosts, setAllPosts } = useAllPostsStore()
+  useEffect(() => {
+    startTransition(async () => {
+      try {
+        const data = await getAllPosts()
+        setAllPosts(data)
+        if (params?.get("category") === "All" || !params?.get("category")) {
+          return
+        } else {
+          const filterData = data.filter(
+            (post) => post.tag === params?.get("category"),
+          )
+          setAllPosts(filterData)
         }
-      })
-    },
-    [allPosts],
-  )
+      } catch (error) {
+        console.log(error)
+      }
+    })
+  }, [setAllPosts, params])
+
   if (isTransition) {
     return (
       <>
@@ -39,19 +41,20 @@ const HomePage = () => {
       </>
     )
   }
+
   return (
     <main className="flexCol gap-10">
       <div className="grid w-full grid-cols-4 gap-2 lg:grid-cols-6 lg:gap-4">
         {tags.map((tag) => (
-          <TagItem key={tag.name} tag={tag} getCategory={getCategory} />
+          <TagItem key={tag.name} tag={tag} />
         ))}
       </div>
-      {filterPosts.length === 0 ? (
-        <div className="flexCenter h-[50vh] w-full">
-          <EmptyPosts category={params?.get("category")} />
+      {allPosts.length === 0 ? (
+        <div className="w-full flexCenter h-[50vh]">
+          <EmptyPosts category={params?.get("category")}/>
         </div>
       ) : (
-        filterPosts.map((post) => <PostCard key={post._id} post={post} />)
+        allPosts.map((post) => <PostCard key={post._id} post={post} />)
       )}
     </main>
   )

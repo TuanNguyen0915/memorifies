@@ -19,11 +19,6 @@ const CurrentUser = () => {
         } else return
       }
       fetchUser()
-      const fetchPosts = async () => {
-        const data = await getAllPosts()
-        setAllPosts(data)
-      }
-      Promise.all([fetchUser(), fetchPosts()])
     } catch (error) {
       console.log(error)
     }
