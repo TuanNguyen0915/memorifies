@@ -18,6 +18,7 @@ const TopBar = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     router.push(`/search/?key=${searchTerm}`)
+    setSearchTerm("")
   }
 
   return (

@@ -1,10 +1,12 @@
 "use client"
+import { useUserStore } from '@/lib/stores/user.store'
 import { SignOutButton } from '@clerk/clerk-react'
 import { LogOutIcon } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
 const ProfileHeader = ({myProfile}) => {
+  const {setCurrentUser} = useUserStore()
   return (
     <div className="group relative h-[250px] w-full overflow-hidden rounded-xl lg:h-[400px] border">
             <Image

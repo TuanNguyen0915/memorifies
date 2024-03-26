@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import DashboardTable from "@/components/shared/dashboard/DashboardTable"
+import DashboardTable from "@/components/shared/dashboard/Dashboard"
 const DashboardPage = () => {
   const { currentUser } = useUserStore()
   

@@ -37,7 +37,7 @@ const ProfilePage = ({ params }) => {
   return (
     <>
       {userProfile && (
-        <div className="mt-5 w-full space-y-5">
+        <div className="w-full">
           {/* COVER IMAGE */}
           <ProfileHeader
             myProfile={myProfile}
@@ -73,7 +73,6 @@ const ProfilePage = ({ params }) => {
               </div>
             </div>
           </div>
-
           <div className="w-full">
             <FollowTabs
               followings={

@@ -12,6 +12,7 @@ export default authMiddleware({
     "/api/user(.*)",
     "/people",
     "/profile(.*)",
+    "/search(.*)",
   ],
   // Prevent the specified routes from accessing
   // authentication information:

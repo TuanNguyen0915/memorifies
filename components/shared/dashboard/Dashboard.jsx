@@ -19,6 +19,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import PostLoader from "../PostLoader"
 
 const DashboardTable = ({ post }) => {
   const router = useRouter()
@@ -31,7 +32,14 @@ const DashboardTable = ({ post }) => {
       setCurrentUser(updatedUser)
     })
   }
-
+  if (transitioning) {
+    return (
+      <>
+        <PostLoader />
+        <PostLoader />
+      </>
+    )
+  }
   return (
     <TableRow key={post._id} className="group">
       <TableCell className="text-base font-semibold opacity-70 transition-all group-hover:opacity-100 lg:text-lg ">
@@ -69,16 +77,21 @@ const DashboardTable = ({ post }) => {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle className="text-xl font-semibold">Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogTitle className="text-xl font-semibold">
+                  Are you absolutely sure?
+                </AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently delete
                   your post.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel className="text-lg rounded-xl">Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => handleDelete(post._id)}
-                className="bg-red-400 hover:bg-red-500 text-lg rounded-xl"
+                <AlertDialogCancel className="rounded-xl text-lg">
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => handleDelete(post._id)}
+                  className="rounded-xl bg-red-400 text-lg hover:bg-red-500"
                 >
                   Continue
                 </AlertDialogAction>

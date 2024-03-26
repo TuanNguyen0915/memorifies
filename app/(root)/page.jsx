@@ -8,30 +8,31 @@ import { getAllPosts } from "@/lib/services/post.service"
 import { useAllPostsStore } from "@/lib/stores/allPosts.store"
 import { useSearchParams } from "next/navigation"
 
-import { useEffect, useTransition } from "react"
+import { useEffect, useState, useTransition } from "react"
 
 const HomePage = () => {
   const params = useSearchParams()
   const [isTransition, startTransition] = useTransition()
   const { allPosts, setAllPosts } = useAllPostsStore()
+  const [filterPosts, setFilterPosts] = useState([])
   useEffect(() => {
     startTransition(async () => {
       try {
         const data = await getAllPosts()
         setAllPosts(data)
         if (params?.get("category") === "All" || !params?.get("category")) {
-          return
+          setFilterPosts(data)
         } else {
           const filterData = data.filter(
             (post) => post.tag === params?.get("category"),
           )
-          setAllPosts(filterData)
+          setFilterPosts(filterData)
         }
       } catch (error) {
         console.log(error)
       }
     })
-  }, [setAllPosts, params])
+  }, [setAllPosts, params, setFilterPosts])
 
   if (isTransition) {
     return (
@@ -49,12 +50,12 @@ const HomePage = () => {
           <TagItem key={tag.name} tag={tag} />
         ))}
       </div>
-      {allPosts.length === 0 ? (
-        <div className="w-full flexCenter h-[50vh]">
-          <EmptyPosts category={params?.get("category")}/>
+      {filterPosts.length === 0 ? (
+        <div className="flexCenter h-[50vh] w-full">
+          <EmptyPosts category={params?.get("category")} />
         </div>
       ) : (
-        allPosts.map((post) => <PostCard key={post._id} post={post} />)
+        filterPosts.map((post) => <PostCard key={post._id} post={post} />)
       )}
     </main>
   )

@@ -60,6 +60,9 @@
   .flexBetween {
     @apply flex items-center justify-between;
   }
+  .backCard {
+    @apply absolute left-0 right-0 top-0 h-full w-full rounded-xl bg-black/50 opacity-0 backdrop-blur-md transition-all duration-1000 group-hover:opacity-100;
+  }
 }
 
 /* CLERK SIGNIN-SIGNUP FORM */

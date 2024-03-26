@@ -13,13 +13,13 @@ const FollowTabs = ({ followings, followers, posts }) => {
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="followings">
           Followings{" "}
-          <span className="max-lg:hidden">({followings.length})</span>
+          <span className="max-md:hidden">({followings.length})</span>
         </TabsTrigger>
         <TabsTrigger value="followers">
-          Followers <span className="max-lg:hidden">({followers.length})</span>
+          Followers <span className="max-md:hidden">({followers.length})</span>
         </TabsTrigger>
         <TabsTrigger value="posts">
-          Posts <span className="max-lg:hidden">({posts.length})</span>
+          Posts <span className="max-md:hidden">({posts.length})</span>
         </TabsTrigger>
       </TabsList>
       <TabsContent value="followings">
