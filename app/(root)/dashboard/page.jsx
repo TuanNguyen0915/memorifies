@@ -3,7 +3,6 @@ import { useUserStore } from "@/lib/stores/user.store"
 import {
   Table,
   TableBody,
-  TableCaption,
   TableHead,
   TableHeader,
   TableRow,
@@ -18,9 +17,9 @@ const DashboardPage = () => {
       <div className="flex w-full items-center justify-evenly">
         <div className="group h-[200px] w-[200px] space-y-7 rounded-xl border p-4 transition-all duration-500 hover:ring-1">
           <p className="w-full text-center text-lg font-semibold text-muted-foreground">
-            Followers
+            {currentUser?.followers.length > 1 ? "Followers" : "Follower"}
           </p>
-          <p className="text-center text-7xl font-extrabold text-indigo-500 group-hover:brightness-125 transition-all duration-500">
+          <p className="text-center text-7xl font-extrabold text-indigo-500 transition-all duration-500 group-hover:brightness-125">
             <CountUp
               isCounting
               start={0}
@@ -31,14 +30,27 @@ const DashboardPage = () => {
         </div>
         <div className="group h-[200px] w-[200px] space-y-7 rounded-xl border p-4 transition-all duration-500 hover:ring-1">
           <p className="w-full text-center text-lg font-semibold text-muted-foreground">
-            Followings
+            {currentUser?.followings.length > 1 ? "Followings" : "Following"}
           </p>
-          <p className="text-center text-7xl font-extrabold text-indigo-500 group-hover:brightness-125 transition-all duration-500">
+          <p className="text-center text-7xl font-extrabold text-indigo-500 transition-all duration-500 group-hover:brightness-125">
             <CountUp
               isCounting
               start={0}
-              end={currentUser?.followers?.length}
-              duration={5}
+              end={currentUser?.followings?.length}
+              duration={4}
+            />
+          </p>
+        </div>
+        <div className="group h-[200px] w-[200px] space-y-7 rounded-xl border p-4 transition-all duration-500 hover:ring-1">
+          <p className="w-full text-center text-lg font-semibold text-muted-foreground">
+            {currentUser?.posts.length > 1 ? "Posts" : "Post"}
+          </p>
+          <p className="text-center text-7xl font-extrabold text-indigo-500 transition-all duration-500 group-hover:brightness-125">
+            <CountUp
+              isCounting
+              start={0}
+              end={currentUser?.posts?.length}
+              duration={3}
             />
           </p>
         </div>
@@ -46,18 +58,6 @@ const DashboardPage = () => {
       <Table className="mt-10">
         {currentUser?.posts && (
           <>
-            <TableCaption>
-              <p className="group">
-                Total
-                <span className="mx-2 transition-all group-hover:text-foreground">
-                  {currentUser.firstName} {currentUser.lastName}
-                </span>
-                posts :
-                <span className="mx-2 text-xl font-bold text-foreground">
-                  {currentUser.posts?.length}
-                </span>
-              </p>
-            </TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead>Post</TableHead>
