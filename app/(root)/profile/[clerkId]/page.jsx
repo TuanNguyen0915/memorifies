@@ -6,7 +6,6 @@ import { followingUser, getUserByClerkId } from "@/lib/services/user.service"
 import { useUserStore } from "@/lib/stores/user.store"
 import Image from "next/image"
 import React, { useEffect, useState } from "react"
-
 const ProfilePage = ({ params }) => {
   const { currentUser, setCurrentUser } = useUserStore()
   const myProfile = currentUser?.clerkId === params.clerkId

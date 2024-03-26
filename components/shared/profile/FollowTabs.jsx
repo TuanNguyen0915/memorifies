@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
+
 const FollowTabs = ({ followings, followers, posts }) => {
   const router = useRouter()
   return (
@@ -13,13 +14,13 @@ const FollowTabs = ({ followings, followers, posts }) => {
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="followings">
           Followings{" "}
-          <span className="max-md:hidden">({followings.length})</span>
+          <span className="max-md:hidden ml-2">({followings.length})</span>
         </TabsTrigger>
         <TabsTrigger value="followers">
-          Followers <span className="max-md:hidden">({followers.length})</span>
+          Followers <span className="max-md:hidden ml-2">({followers.length})</span>
         </TabsTrigger>
         <TabsTrigger value="posts">
-          Posts <span className="max-md:hidden">({posts.length})</span>
+          Posts <span className="max-md:hidden ml-2">({posts.length})</span>
         </TabsTrigger>
       </TabsList>
       <TabsContent value="followings">
