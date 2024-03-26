@@ -84,10 +84,13 @@ const SearchPage = () => {
               <div className="m-2 flex flex-wrap justify-evenly gap-4">
                 {searchPosts?.map((post) => (
                   <div
+                    onClick={() => {
+                      router.push(`/post/${post._id}`)
+                    }}
                     key={post._id}
-                    className="group relative flex h-[250px] w-1/3 flex-col justify-between gap-4 rounded-xl p-2 ring-1 lg:h-[400px] lg:w-1/4"
+                    className="group relative flex h-[250px] w-1/3 flex-col justify-between gap-4 rounded-xl p-2 ring-1 lg:h-[400px] lg:w-1/4 cursor-pointer"
                   >
-                    <p className="text-xl font-semibold tracking-wide transition-all duration-1000 ">
+                    <p className="text-xl font-semibold tracking-wide capitalize transition-all duration-1000 ">
                       {post.caption}
                     </p>
                     <div className="relative h-[200px] w-full flex-1 overflow-hidden transition-all duration-1000  lg:h-[300px]">

@@ -45,7 +45,7 @@ const FollowTabs = ({ followings, followers, posts }) => {
               className={`flexBetween w-full ${idx !== posts.length - 1 && "border-b"} pb-4`}
             >
               <div className="space-y-4">
-                <p className="text-lg font-bold">{post.caption}</p>
+                <p className="text-lg font-bold capitalize">{post.caption}</p>
                 <Button
                   variant="outline"
                   className="w-fit border-indigo-300 max-lg:text-sm"

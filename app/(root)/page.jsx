@@ -13,7 +13,7 @@ import { useEffect, useState, useTransition } from "react"
 const HomePage = () => {
   const params = useSearchParams()
   const [isTransition, startTransition] = useTransition()
-  const { allPosts, setAllPosts } = useAllPostsStore()
+  const { setAllPosts } = useAllPostsStore()
   const [filterPosts, setFilterPosts] = useState([])
   useEffect(() => {
     startTransition(async () => {
@@ -55,7 +55,7 @@ const HomePage = () => {
           <EmptyPosts category={params?.get("category")} />
         </div>
       ) : (
-        filterPosts.map((post) => <PostCard key={post._id} post={post} />)
+        filterPosts.map((post) => <PostCard key={post._id} post={post} setFilterPosts={setFilterPosts} category={params?.get("category")}/>)
       )}
     </main>
   )

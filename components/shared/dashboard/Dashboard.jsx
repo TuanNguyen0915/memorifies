@@ -42,7 +42,7 @@ const DashboardTable = ({ post }) => {
   }
   return (
     <TableRow key={post._id} className="group">
-      <TableCell className="text-base font-semibold opacity-70 transition-all group-hover:opacity-100 lg:text-lg ">
+      <TableCell className="text-base font-semibold capitalize opacity-70 transition-all group-hover:opacity-100 lg:text-lg ">
         {post.caption}
       </TableCell>
       <TableCell>
