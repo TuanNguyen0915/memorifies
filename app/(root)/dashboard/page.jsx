@@ -14,7 +14,7 @@ const DashboardPage = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex w-full items-center justify-evenly">
+      <div className="flex w-full items-center justify-evenly flex-wrap gap-2">
         <div className="group h-[200px] w-[200px] space-y-7 rounded-xl border p-4 transition-all duration-500 hover:ring-1">
           <p className="w-full text-center text-lg font-semibold text-muted-foreground">
             {currentUser?.followers.length > 1 ? "Followers" : "Follower"}

@@ -28,7 +28,7 @@ const BottomBar = () => {
         })}
       </SignedIn>
       <SignedOut>
-        <div className="flexBetween w-full mx-10">
+        <div className="flexBetween mx-10 w-full">
           <div className="flexCenter flex-1 gap-10">
             {unLoginNavLinks.map((link, idx) => {
               const isActive = pathName === link.path
@@ -45,7 +45,11 @@ const BottomBar = () => {
               )
             })}
           </div>
-          <Button variant="custom" onClick={() => router.push("/login")} className="p-6 text-lg tracking-wider">
+          <Button
+            variant="outline"
+            onClick={() => router.push("/sign-in")}
+            className="p-6 text-lg tracking-wider"
+          >
             Login
           </Button>
         </div>

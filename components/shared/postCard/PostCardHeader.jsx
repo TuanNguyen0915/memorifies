@@ -35,7 +35,7 @@ const PostCardHeader = ({ post, handleFollow }) => {
             }}
           >
             <Image
-              src={post.creator.profilePhoto}
+              src={post.creator?.profilePhoto}
               alt="avatar"
               width={80}
               height={80}
